@@ -1,0 +1,14 @@
+; Archivo de resolución inversa para obando.edu.co
+$TTL 604800
+@   IN  SOA ns1.obando.edu.co. admin.obando.edu.co. (
+                  2         ; Serial
+             604800         ; Refresh
+              86400         ; Retry
+            2419200         ; Expire
+             604800 )       ; Negative Cache TTL
+;
+@   IN  NS  ns1.obando.edu.co.
+
+5.168.192.in-addr.arpa. IN  PTR correo.obando.edu.co.
+6.168.192.in-addr.arpa. IN  PTR sistemas.obando.edu.co.
+7.168.192.in-addr.arpa. IN  PTR respaldo.obando.edu.co.
