@@ -1,0 +1,14 @@
+$TTL 604800
+@   IN  SOA ns1.obando.edu.co. admin.obando.edu.co. (
+                  2         ; Serial
+             604800         ; Refresh
+              86400         ; Retry
+            2419200         ; Expire
+             604800 )       ; Negative Cache TTL
+;
+@   IN  NS  ns1.obando.edu.co.
+@   IN  A   192.168.1.1
+
+correo IN  A   192.168.1.5
+sistemas   IN  A   192.168.1.6
+respaldo   IN  A   192.168.1.7
