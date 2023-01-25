@@ -1,0 +1,15 @@
+; Archivo de resolución inversa para pantoja.com.co
+$TTL 604800
+@   IN  SOA ns1.pantoja.com.co. admin.pantoja.com.co. (
+                  2         ; Serial
+             604800         ; Refresh
+              86400         ; Retry
+            2419200         ; Expire
+             604800 )       ; Negative Cache TTL
+;
+@   IN  NS  ns1.pantoja.com.co.
+
+2.168.192.in-addr.arpa. IN  PTR ns1.pantoja.com.co.
+3.168.192.in-addr.arpa. IN  PTR correo.pantoja.com.co.
+4.168.192.in-addr.arpa. IN  PTR sistemas.pantoja.com.co.
+5.168.192.in-addr.arpa. IN  PTR respaldo.pantoja.com.co.
