@@ -26,8 +26,6 @@ if id "$nombre_usuario" >/dev/null 2>&1; then
     echo "El usuario $nombre_usuario ya existe."
 else
     # Crear el usuario con su nombre como contraseña
-    sudo useradd -m -p $(openssl passwd -1 $nombre_usuario) $nombre_usuario
-    echo "El usuario $nombre_usuario se ha creado correctamente con su nombre como contraseña."
     if [ $crear_grupo -eq 2 ]; then
        # Crear arreglo de nombres de grupo
         groups=($(cut -d: -f1 /etc/group))
@@ -37,12 +35,15 @@ else
         # Guardar nombre seleccionado en una variable
           if [[ -n "$group_name" ]]; then
              selected_group="$group_name"
+             echo "El grupo seleccionado es: $selected_group"
+             sudo useradd -m -p -G $(openssl passwd -1 $nombre_usuario) $nombre_usuario $selected_group
+             echo "El usuario $nombre_usuario se ha creado correctamente con su nombre como contraseña."
              break
           fi
         done
-        echo "El grupo seleccionado es: $selected_group"
-        sudo usermod -a -G $selected_group $usuario
+        
     fi    
+    
 fi
 
 # Crear lista de usuarios permitidos
