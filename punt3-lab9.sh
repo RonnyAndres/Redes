@@ -23,11 +23,19 @@ read -p "Ingrese el nombre del nuevo usuario: " nombre_usuario
 
 # Verificar que el usuario no exista
 if id "$nombre_usuario" >/dev/null 2>&1; then
-    echo "El usuario $nombre_usuario ya existe."
-else
-  # Crear el usuario con su nombre como contraseña
-  adduser --password $(echo $nombreusuario | openssl passwd -1 -stdin) $nombreusuario
-  usermod -aG ftpusers $nombreusuario
+
+  # Crear el usuario con el nombre proporcionado
+  useradd -m $nombre_usuario
+
+  # Establecer la contraseña como el nombre de usuario ingresado
+  echo "$nombre_usuario:$nombre_usuario" | chpasswd
+
+  # Añadir el usuario al grupo especificado
+  usermod -aG ftpusers $username
+
+  # Informar al usuario sobre la creación del usuario y la asignación del grupo
+  echo "El usuario $username ha sido creado con éxito y se ha añadido al grupo $groupname."
+
 fi
 
 # Crear lista de usuarios permitidos
