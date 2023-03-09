@@ -23,25 +23,18 @@ read -p "Ingrese el nombre del nuevo usuario: " nombre_usuario
 
 # Verificar que el usuario no exista
 if id "$nombre_usuario" >/dev/null 2>&1; then
-
-  # Crear el usuario con el nombre proporcionado
-  useradd -m $nombre_usuario
-
-  # Establecer la contraseña como el nombre de usuario ingresado
-  echo "$nombre_usuario:$nombre_usuario" | chpasswd
-
-  # Añadir el usuario al grupo especificado
-  usermod -aG ftpusers $username
-
-  # Informar al usuario sobre la creación del usuario y la asignación del grupo
-  echo "El usuario $username ha sido creado con éxito y se ha añadido al grupo $groupname."
+    echo "El usuario $nombre_usuario ya existe."
+else
+     # Crear el usuario con su nombre como contraseña
+    sudo useradd -m -p $(openssl passwd -1 $nombre_usuario) $nombre_usuario
+    echo "El usuario $nombre_usuario se ha creado correctamente con su nombre como contraseña."
+    #sudo usermod -a -G $nombre_grupo $usuario
 
 fi
 
 # Crear lista de usuarios permitidos
 echo "Usuarios disponibles:"
-compgen -u | grep -v '^ftp$\|^guest\|^nobody\|root' | grep -vFf '/etc/vsftpd.chroot_list' | awk -F':' '{if (system("id -nG "$1" | grep -qw $nombre_grupo")) print $1}'
-
+compgen -u | grep -v '^ftp$\|^guest\|^nobody\|root' | grep -vFf '/etc/vsftpd.chroot_list' 
 usuarios_permitidos=()
 while true; do
     read -p "Ingrese el nombre de usuario permitido (dejar en blanco para terminar): " usuario
@@ -53,7 +46,7 @@ while true; do
         usuarios_permitidos+=($usuario)
         echo "Usuarios agregados hasta el momento: ${usuarios_permitidos[*]}"
         echo "Usuarios disponibles:"
-        compgen -u | grep -v '^ftp$\|^guest\|^nobody\|root' | grep -vFf '/etc/vsftpd.chroot_list' | awk -F':' '{if (system("id -nG "$1" | grep -qw $nombre_grupo")) print $1}'
+        comm -23 <(compgen -u | grep -v '^ftp$\|^guest\|^nobody\|root' | sort) <(echo "${usuarios_permitidos[*]}" | tr ' ' '\n' | sort)
         
     else
         echo "El usuario no existe."
