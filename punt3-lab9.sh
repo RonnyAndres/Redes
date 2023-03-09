@@ -25,15 +25,9 @@ read -p "Ingrese el nombre del nuevo usuario: " nombre_usuario
 if id "$nombre_usuario" >/dev/null 2>&1; then
     echo "El usuario $nombre_usuario ya existe."
 else
-    # Crear el usuario con su nombre como contraseña
-    if [ $crear_grupo -eq 2 ]; then
-        # Crear arreglo de nombres de grupo
-        cut -d: -f1 /etc/group
-        read -p "Escriba el nombre del grupo al que pertenecera el usuario: " nombre_group
-        sudo useradd -m -g $nombre_group -s /bin/bash $nombre_usuario      
-    else
-        sudo useradd -m -g $nombre_grupo -s /bin/bash $nombre_usuario 
-    fi    
+  # Crear el usuario con su nombre como contraseña
+  adduser --password $(echo $nombreusuario | openssl passwd -1 -stdin) $nombreusuario
+  usermod -aG ftpusers $nombreusuario
 fi
 
 # Crear lista de usuarios permitidos
